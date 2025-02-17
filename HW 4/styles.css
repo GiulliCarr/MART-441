@@ -1,0 +1,86 @@
+/* General styles */
+body {
+    font-family: 'Baskerville', 'Georgia', serif;
+    background-color: #0B1A30; /* Darker space-themed background */
+    color: #FFFFFF;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Game container */
+#game-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(56, 97, 140, 0.9); /* Slightly transparent blue */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Headers */
+h1 {
+    font-size: 26px;
+    color: #FFD700; /* Gold for contrast */
+}
+
+/* Paragraphs */
+p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* Input field */
+input {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 80%;
+    background-color: #1E3D59;
+    color: white;
+}
+
+/* Buttons */
+button {
+    background-color: #3F4531;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+}
+
+button:hover {
+    background-color: #BD8B9C;
+    transform: scale(1.05);
+}
+
+/* Restart button */
+#restart {
+    display: none;
+    background-color: red;
+    font-weight: bold;
+}
+
+/* Images */
+img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Choices container */
+#choices {
+    margin-top: 20px;
+}
