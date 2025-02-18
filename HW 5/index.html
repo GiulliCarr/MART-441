@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Matching Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-gap: 10px;
+        }
+        .grid img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" id="gameBoard"></div>
+    
+    <script>
+        const blankImage = 'images/blank.png';
+        const images = [
+            'images/img.1.jpg', 'images/img.2.jpg', 'images/img.3.jpeg', 
+            'images/img.4.jpeg', 'images/img.5.jpg', 'images/img.6.jpg'
+        ];
+
+        let actualImages = [];
+        let revealed = Array(12).fill(false);
+
+        function shuffleImages() {
+            let tempArray = [...images, ...images]; 
+            tempArray.sort(() => Math.random() - 0.5); 
+            return tempArray;
+        }
+
+        actualImages = shuffleImages();
+
+        // Display blank images in the grid
+        function createBoard() {
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = '';
+
+            for (let i = 0; i < 12; i++) {
+                let img = document.createElement('img');
+                img.src = blankImage; 
+                img.setAttribute('data-index', i);
+                img.addEventListener('click', revealImage);
+                gameBoard.appendChild(img);
+            }
+        }
+
+
+        function revealImage(event) {
+            let index = event.target.getAttribute('data-index');
+            if (!revealed[index]) {
+                event.target.src = actualImages[index]; 
+                revealed[index] = true;
+            }
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+This was an interesting assignment. I had a hard time at first understanding the parameters of the assignment (I interpreted it as us making forms and each array was in a different form). I realized I was just overcomplicating it and stuck to focusing on just doing what the rubric was asking.
+The version that AI gave me was more complex, and utilized more stylization. honestly I like the look I got going; it's straightforward.
+This time around I actually figured out my issues with having images show up in my code! Basically I wasn't inputing the correct file form in each image code line.... So a simple fix for an extremely aggravating issue...
+I also had fun with the images and chose photos I took on my birthday weekend trip to San Fancisco with my friends back in January :)
