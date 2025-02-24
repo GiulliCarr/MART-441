@@ -1,0 +1,2 @@
+I LOVED making this! It's really cool being able to see the code at work, especially the JSON; I had no idea the capabilities!
+I utilized AI to help me format the main styling, and correcting any errors I had in my code prior.

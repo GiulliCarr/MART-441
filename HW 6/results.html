@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
+        .results { text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="results">
+        <h2>Good job! You've completed the puzzle!</h2>
+        <p id="playerInfo"></p>
+        <p id="stats"></p>
+        <button onclick="restartGame()">Play Again?</button>
+    </div>
+
+    <script>
+        const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+        document.getElementById('playerInfo').textContent = `Player: ${playerInfo.name}, Age: ${playerInfo.age}`;
+        document.getElementById('stats').textContent = `Total Attempts: ${playerInfo.attempts}`;
+
+        function restartGame() {
+            localStorage.removeItem('playerInfo');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

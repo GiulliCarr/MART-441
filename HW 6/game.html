@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Matching Game</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; height: 100vh; background-color: #f4f4f4; }
+        .grid { display: grid; grid-template-columns: repeat(4, 100px); grid-gap: 10px; }
+        .grid img { width: 100px; height: 100px; cursor: pointer; border: 2px solid #333; }
+        .info { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h3 id="playerDetails"></h3>
+        <p>Attempts: <span id="attemptsCount">0</span></p>
+    </div>
+    <div class="grid" id="gameBoard"></div>
+
+    <script>
+        const blankImage = 'images/blank.png';
+        const images = [
+            'images/img.1.jpg', 'images/img.2.jpg', 'images/img.3.jpeg', 
+            'images/img.4.jpeg', 'images/img.5.jpg', 'images/img.6.jpg'
+        ];
+
+        let actualImages = [...images, ...images];
+        actualImages.sort(() => Math.random() - 0.5);
+        let revealed = Array(12).fill(false);
+        let selected = [];
+        let attempts = 0;
+
+        const playerInfo = JSON.parse(localStorage.getItem('playerInfo'));
+        document.getElementById('playerDetails').textContent = `Player: ${playerInfo.name}, Age: ${playerInfo.age}`;
+
+        function createBoard() {
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = '';
+            for (let i = 0; i < 12; i++) {
+                let img = document.createElement('img');
+                img.src = blankImage;
+                img.setAttribute('data-index', i);
+                img.addEventListener('click', revealImage);
+                gameBoard.appendChild(img);
+            }
+        }
+
+        function revealImage(event) {
+            const index = event.target.getAttribute('data-index');
+            if (!revealed[index] && selected.length < 2) {
+                event.target.src = actualImages[index];
+                selected.push({ index, img: event.target });
+
+                if (selected.length === 2) {
+                    attempts++;
+                    document.getElementById('attemptsCount').textContent = attempts;
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [first, second] = selected;
+            if (actualImages[first.index] !== actualImages[second.index]) {
+                first.img.src = blankImage;
+                second.img.src = blankImage;
+                revealed[first.index] = false;
+                revealed[second.index] = false;
+            } else {
+                revealed[first.index] = true;
+                revealed[second.index] = true;
+            }
+            selected = [];
+
+            if (revealed.every(Boolean)) {
+                playerInfo.attempts = attempts;
+                localStorage.setItem('playerInfo', JSON.stringify(playerInfo));
+                window.location.href = 'results.html';
+            }
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
