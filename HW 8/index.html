@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Geese Animation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Local jQuery -->
+    <style>
+        body {
+            background-color: #2E5266;
+            color: #FFC759;
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+            text-align: center;
+        }
+        .image-container img {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            display: none;
+        }
+        .poem {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            font-style: italic;
+            opacity: 0;
+        }
+        .shape {
+            position: absolute;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img src="geese.jpg" class="fade-img">
+        <img src="goose.jpg" class="fade-img">
+        <img src="guise.jpg" class="fade-img">
+    </div>
+    
+    <div class="poem">"Tell me about despair, yours, and I will tell you mine."</div>
+    
+    <script>
+        $(document).ready(function() {
+            let images = $('.fade-img');
+            let index = 0;
+            function switchImages() {
+                $(images[index]).fadeOut(1000, function() {
+                    index = (index + 1) % images.length;
+                    $(images[index]).fadeIn(1000);
+                });
+            }
+            setInterval(switchImages, 4000);
+            $(images[0]).fadeIn(1000);
+
+            let poemLines = [
+                "You do not have to be good.",
+                "You do not have to walk on your knees",
+                "for a hundred miles through the desert, repenting.",
+                "Tell me about despair, yours, and I will tell you mine.",
+                "Meanwhile the world goes on."
+            ];
+            let poemIndex = 0;
+            function switchPoemLines() {
+                $('.poem').fadeOut(1000, function() {
+                    poemIndex = (poemIndex + 1) % poemLines.length;
+                    $(this).text(poemLines[poemIndex]).fadeIn(1000);
+                });
+            }
+            setInterval(switchPoemLines, 5000);
+            $('.poem').fadeIn(1000); 
+
+            function createShape() {
+                let shape = $('<div class="shape"></div>');
+                let size = Math.random() * 50 + 20;
+                let posX = Math.random() * window.innerWidth;
+                let posY = Math.random() * window.innerHeight;
+                
+                shape.css({
+                    width: size + 'px',
+                    height: size + 'px',
+                    position: 'absolute',
+                    top: posY + 'px',
+                    left: posX + 'px'
+                });
+                
+                if (Math.random() > 0.5) {
+                    shape.css({ 'border-radius': '50%', 'background-color': '#FFC759' });
+                } else {
+                    shape.css({ 'width': 0, 'height': 0, 'border-left': size + 'px solid transparent', 'border-right': size + 'px solid transparent', 'border-bottom': size * 2 + 'px solid #FFC759' });
+                }
+                
+                $('body').append(shape);
+                shape.animate({ top: '-100px', opacity: 0 }, 4000, function() {
+                    $(this).remove();
+                });
+            }
+            setInterval(createShape, 2000);
+        });
+    </script>
+</body>
+</html>
