@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Star & Triangle Collision</title>
+  <style>
+    body {
+      background-image: url('cat.jpg'); 
+      background-repeat: repeat;
+      background-size: auto;
+      text-align: center;
+    }
+  
+    canvas {
+      border: 5px solid #4a4a4a;
+      background-color: #ffffff;
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+  
+</head>
+<body>
+  <h1>Use Arrows to Move the Star, Don't Hit the Triangle</h1>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <audio id="bgMusic" loop autoplay>
+    <source src="thisisfunnytome.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+document.addEventListener("keydown", () => {
+  const music = document.getElementById("bgMusic");
+  if (music.paused) {
+    music.play().catch((e) => {
+      console.log("Autoplay prevented:", e);
+    });
+  }
+}, { once: true });
+
+
+    class GameObject {
+      constructor(x, y, size, color, shape, dx = 0, dy = 0) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.originalSize = size;
+        this.color = color;
+        this.shape = shape;
+        this.dx = dx;
+        this.dy = dy;
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        if (this.shape === "star") {
+          drawStar(ctx, this.x, this.y, 5, this.size, this.size / 2);
+        } else if (this.shape === "triangle") {
+          drawTriangle(ctx, this.x, this.y, this.size);
+        }
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      update() {
+        this.x += this.dx;
+        this.y += this.dy;
+
+
+        if (this.x + this.size > canvas.width || this.x - this.size < 0) {
+          this.dx *= -1;
+        }
+        if (this.y + this.size > canvas.height || this.y - this.size < 0) {
+          this.dy *= -1;
+        }
+
+        this.draw();
+      }
+
+      checkCollision(other) {
+        const dx = this.x - other.x;
+        const dy = this.y - other.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < this.size + other.size;
+      }
+    }
+
+    function drawStar(ctx, x, y, points, outerRadius, innerRadius) {
+      let angle = Math.PI / points;
+      ctx.moveTo(x + outerRadius * Math.cos(0), y + outerRadius * Math.sin(0));
+      for (let i = 0; i < 2 * points; i++) {
+        let r = i % 2 === 0 ? outerRadius : innerRadius;
+        let a = i * angle;
+        ctx.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
+      }
+      ctx.closePath();
+    }
+
+    function drawTriangle(ctx, x, y, size) {
+      const height = size * Math.sqrt(3) / 2;
+      ctx.moveTo(x, y - height / 2);
+      ctx.lineTo(x - size / 2, y + height / 2);
+      ctx.lineTo(x + size / 2, y + height / 2);
+      ctx.closePath();
+    }
+
+    const player = new GameObject(100, 100, 20, "#FF6B6B", "star");
+    const enemy = new GameObject(300, 200, 25, "#4ECDC4", "triangle", 2, 2);
+    let backgroundColor = "#ffffff";
+
+    const keys = {};
+    document.addEventListener("keydown", (e) => keys[e.key] = true);
+    document.addEventListener("keyup", (e) => keys[e.key] = false);
+
+    function movePlayer() {
+      if (keys["ArrowUp"]) player.y -= 3;
+      if (keys["ArrowDown"]) player.y += 3;
+      if (keys["ArrowLeft"]) player.x -= 3;
+      if (keys["ArrowRight"]) player.x += 3;
+
+
+      player.x = Math.max(player.size, Math.min(canvas.width - player.size, player.x));
+      player.y = Math.max(player.size, Math.min(canvas.height - player.size, player.y));
+    }
+
+    function animate() {
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      movePlayer();
+      enemy.update();
+      player.draw();
+
+      if (player.checkCollision(enemy)) {
+        backgroundColor = "#FFD166";
+        player.size = 30;
+        enemy.size = 35;
+      } else {
+        backgroundColor = "#ffffff";
+        player.size = player.originalSize;
+        enemy.size = enemy.originalSize;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
