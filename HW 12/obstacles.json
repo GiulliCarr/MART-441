@@ -1,0 +1,8 @@
+[
+    { "x": 150, "y": 150, "size": 40, "shape": "triangle" },
+    { "x": 300, "y": 100, "size": 40, "shape": "square" },
+    { "x": 450, "y": 200, "size": 40, "shape": "circle" },
+    { "x": 600, "y": 300, "size": 40, "shape": "hexagon" },
+    { "x": 250, "y": 350, "size": 40, "shape": "rhombus" }
+  ]
+  
